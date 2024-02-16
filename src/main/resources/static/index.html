@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>ADDRESS1</th>
+        <th>ADDRESS2</th>
+        <th>CITY</th>
+        <th>ZIP CODE</th>
+        <th>ACTION</th>
+    </tr>
+    <tbody id="body">
+
+    </tbody>
+</table>
+<script>
+    $(document).ready(function (){
+        view();
+    })
+    function view(){
+        $.ajax({
+            url:'http://localhost:8080/findall',
+            type:'get',
+            success:function (employee){
+                var body=$('#body');
+                body.empty();
+                employee.forEach(function (s){
+                    var row='<tr>'+
+                        '<td>'+s.employeeId+'</td>'+
+                        '<td>'+s.name+'</td>'+
+                        '<td>'+s.address1+'</td>'+
+                        '<td>'+s.address2+'</td>'+
+                        '<td>'+s.city+'</td>'+
+                        '<td>'+s.zip+'</td>'+
+                        '<td>'+
+                        '<button class="btn btn-primary" onclick="update('+s.employeeId+')">UPDATE</button>'+
+                        '<button class="btn btn-danger" onclick="deletee('+s.employeeId+')">DELETE</button>'+
+                        '</td>'+
+                        '</tr>';
+                    body.append(row);
+                })
+            }
+        })
+    }
+    function deletee(id){
+        if (confirm('do you want to delete')) {
+            $.ajax({
+                url: 'http://localhost:8080/delete/' + id,
+                type: 'delete',
+                success: function () {
+                    view();
+                }
+            })
+        }
+    }
+    function update(id){
+        localStorage.setItem("id",id);
+        window.location.href="update.html";
+    }
+</script>
+<form action="add.html">
+    <input type="submit" class="btn btn-primary" value="ADD">
+</form><br>
+</body>
+</html>

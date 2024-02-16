@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <input type="hidden" id="id">
+    NAME:<input type="text" id="name"><br>
+    ADDRESSLINE1:<input type="text" id="line1"><br>
+    ADDRESSLINE2:<input type="text" id="line2"><br>
+    CITY:<input type="text" id="city"><br>
+    ZIP CODE:<input type="number" id="zip"><br>
+    <input type="button" class="btn btn-primary" value="UPDATE" onclick="update()">
+</form>
+<script>
+    $(document).ready(function () {
+        var ss = localStorage.getItem("id");
+        $.get("http://localhost:8080/viewall/" + ss, function (s) {
+            $('#id').val(s.employeeId);
+            $('#name').val(s.name);
+            $('#line1').val(s.address1);
+            $('#line2').val(s.address2);
+            $('#city').val(s.city);
+            $('#zip').val(s.zip);
+        })
+    })
+
+    function update() {
+        var employeeId = $('#id').val();
+        var name = $('#name').val();
+        var address1 = $('#line1').val();
+        var address2 = $('#line2').val();
+        var city = $('#city').val();
+        var zip = $('#zip').val();
+        var data = {
+            employeeId,
+            name,
+            address1,
+            address2,
+            city,
+            zip
+        }
+        $.ajax({
+            url: 'http://localhost:8080/update',
+            type: 'put',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function () {
+                window.location.href = "index.html";
+            }
+        })
+    }
+</script>
+</body>
+</html>

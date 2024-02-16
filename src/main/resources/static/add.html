@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<form>
+<input type="hidden" id="id">
+   NAME:<input type="text" id="name"><br>
+   ADDRESSLINE1:<input type="text" id="line1"><br>
+   ADDRESSLINE2:<input type="text" id="line2"><br>
+   CITY:<input type="text" id="city"><br>
+   ZIP CODE:<input type="number" id="zip"><br>
+   <input type="button" class="btn btn-primary" value="ADD" onclick="insert()"><br><br>
+</form>
+<script>
+    function insert() {
+        var employeeId = $('#id').val();
+        var name = $('#name').val();
+        var address1 = $('#line1').val();
+        var address2 = $('#line2').val();
+        var city = $('#city').val();
+        var zip = $('#zip').val();
+
+        if (!name||!address1||!address2||!city||!zip){
+            alert('Enter every field');
+            return;
+        }
+        var data = {
+            employeeId,
+            name,
+            address1,
+            address2,
+            city,
+            zip
+        }
+        $.ajax({
+            url: 'http://localhost:8080/insert',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function () {
+                window.location.href="index.html";
+            }
+        })
+    }
+</script>
+</body>
+</html>
